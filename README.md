@@ -1,5 +1,6 @@
 # njfu
 njfu图书馆抢座系统
+
 网上关于如何在云服务器上配置谷歌浏览器环境来实现selenium框架的步骤非常杂乱，不同操作系统的指令和方式都不同，
 
 下面我以我个人的服务器系统Alibaba Cloud 3 (Soaring Falcon) x86_64(linux)系统为例，来说明一下详细步骤
