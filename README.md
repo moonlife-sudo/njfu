@@ -1,5 +1,5 @@
 # njfu
-njfu图书馆抢座系统
+一、njfu图书馆抢座系统
 
 网上关于如何在云服务器上配置谷歌浏览器环境来实现selenium框架的步骤非常杂乱，不同操作系统的指令和方式都不同，
 
@@ -45,3 +45,66 @@ yum -y install google-chrome-stable –nogpgcheck
 11.安装对应的python版本
 
 12.运行方式选择gunicom(多线程),网络协议选择wsgi
+
+二、宝塔面板上python flask项目SSL证书配置
+
+1.从阿里云或其他平台下载SSL证书，并将pem和key两个文件上传到宝塔面板对应项目目录里面
+
+2.在app.py(main.py)里面添加
+
+    if __name__ == '__main__':
+
+    app.run(debug=True, host='0.0.0.0', port=443, ssl_context=('certificate.crt', 'private.key'))
+
+其中'certificate.crt', 'private.key'是你对应pem和key文件的目录地址
+
+3.在宝塔面板的配置文件中的server里面配置如下所示：
+
+server
+
+{
+
+    listen 80;
+    
+    listen 443 ssl http2;
+    
+    server_name "你的域名";
+    
+    index index.html index.htm default.htm default.html;
+    
+    root /www/wwwroot/library;
+    
+    if ($server_port !~ 443){
+    
+        rewrite ^(/.*)$ https://$host$1 permanent;
+        
+    }
+    
+#将http访问切换到https访问
+
+    ssl_certificate    /www/wwwroot/library/xtygame.fun.pem;
+    
+#pem和key的目录地址
+
+    ssl_certificate_key   /www/wwwroot/library/xtygame.fun.key;
+    
+     ssl_protocols TLSv1.1 TLSv1.2 TLSv1.3;
+     
+    ssl_ciphers EECDH+CHACHA20:EECDH+CHACHA20-draft:EECDH+AES128:RSA+AES128:EECDH+AES256:RSA+AES256:EECDH+3DES:RSA+3DES:!MD5;
+    
+    ssl_prefer_server_ciphers on;
+    
+    ssl_session_cache shared:SSL:10m;
+    
+    ssl_session_timeout 10m;
+    
+    add_header Strict-Transport-Security "max-age=31536000";
+    
+    error_page 497  https://$host$request_uri;
+    
+#处理http请求重定向到https请求
+
+}
+
+4.重启项目即可
+
