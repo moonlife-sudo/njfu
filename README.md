@@ -13,6 +13,9 @@
 
 yum -y install google-chrome-stable –nogpgcheck
 
+（卸载谷歌浏览器指令：sudo yum remove google-chrome-stable
+）
+
 3.查看版本：google-chrome –version
 
 （我的版本显示是120.0.6099.216)
